@@ -1,0 +1,20 @@
+
+{
+  "name": "metalsmith-branch",
+  "description": "A metalsmith plugin to run separate middleware pipelines on selected files",
+  "repository": "git://github.com/ericgj/metalsmith-branch.git",
+  "version": "0.0.1",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "dependencies": {
+    "ware": "~0.2.1",
+    "multimatch": "^0.1.0"
+  },
+  "devDependencies": {
+    "mocha": "1.x",
+    "metalsmith": "0.x",
+    "metalsmith-templates": "0.3.x",
+    "metalsmith-markdown": "0.2.x",
+    "assert-dir-equal": "0.0.1"
+  }
+}
