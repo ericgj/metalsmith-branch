@@ -30,6 +30,7 @@
                     engine: "swig",
                     inPlace: true
                   })
+            )
             .use( markdown() )      // and generate html
         )
 
