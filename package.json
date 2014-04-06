@@ -15,6 +15,8 @@
     "metalsmith": "0.x",
     "metalsmith-templates": "0.3.x",
     "metalsmith-markdown": "0.2.x",
+    "clone": "^0.1.11",
+    "async": "~0.2.10",
     "assert-dir-equal": "0.0.1"
   }
 }

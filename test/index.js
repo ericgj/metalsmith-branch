@@ -1,5 +1,8 @@
 var assert = require('assert');
 var equal = require('assert-dir-equal');
+var path  = require('path');
+var clone = require('clone');
+var each = require('async').each;
 var Metalsmith = require('metalsmith');
 var markdown = require('metalsmith-markdown');
 var branch = require('..');
@@ -30,6 +33,46 @@ describe('metalsmith-branch', function(){
               .use( markdown() )
           )
       .build( assertDirEqual('basic',done) )
+  });
+
+
+  it('branch pipelines should be able to add, update, and remove files', function(done){
+    
+    function adder(files,ms,done){
+      function add(name,done){
+        var newf = path.basename(name, path.extname(name)) + '.2' + path.extname(name);
+        files[newf] = clone(files[name]);
+        done();
+      }
+      each(Object.keys(files), add, done);
+    }
+
+    function updater(files,ms,done){
+      function update(name,done){
+        var old = files[name].contents.toString().trim();
+        files[name].contents = new Buffer(
+          '<html><head></head><body>' + 
+          old + 
+          '</body></html>'
+        );
+        done();
+      }
+      each(Object.keys(files), update, done);
+    }
+
+    function remover(files,ms,done){
+      function remove(name,done){
+        delete files[name];
+        done();
+      }
+      each(Object.keys(files), remove, done);
+    }
+   
+    Metalsmith('test/fixtures/mutate')
+      .use( branch('add.*'   ).use( adder ) )
+      .use( branch('update.*').use( updater ) )
+      .use( branch('remove.*').use( remover ) )
+    .build( assertDirEqual('mutate',done) )
   });
 
 
