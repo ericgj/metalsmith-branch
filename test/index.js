@@ -5,6 +5,7 @@ var clone = require('clone');
 var each = require('async').each;
 var Metalsmith = require('metalsmith');
 var markdown = require('metalsmith-markdown');
+var debug = require('debug')('metalsmith-branch-test');
 var branch = require('..');
 
 describe('metalsmith-branch', function(){
@@ -84,9 +85,39 @@ describe('metalsmith-branch', function(){
 
   it('should process files according to two branches, branch selections intersect')
 
-  it('should process files according to nested branches, branch selections do not intersect')
+  it('should process files according to nested branches', function(done){
+   
+   function hasLicense(file,props){
+     return props.license && props.author
+   }
+   
+   function appendLicense(files,ms,done){
+     function append(file,done){
+       var str = [
+         "",
+         "-----",
+         "Licensed " + files[file].license + " by " + files[file].author,
+       ].join("\n");
+       var contents = files[file].contents
+         , len = contents.length
+       contents.length = len + str.length
+       contents.write(str,len);
+       done();
+     }
+     debug('appendLicense');
+     each(Object.keys(files), append, done);
+   }
 
-  it('should process files according to nested branches, branch selections intersect')
+   Metalsmith('test/fixtures/nested')
+     .use( branch('*.md')
+             .use( branch( hasLicense )
+                     .use( appendLicense )
+                 )
+             .use( markdown() )
+         )
+     .build( assertDirEqual('nested', done) );
+  })
+
 
 });
 
