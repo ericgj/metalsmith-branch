@@ -57,7 +57,6 @@
   ```
 
   Note that nested branches are possible too.
-  _April 2014: Please note that nested branches do not yet work correctly._
 
   ```js
   // to post-process only markdown-sourced files in a 'special' dir:
