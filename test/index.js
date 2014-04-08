@@ -79,7 +79,48 @@ describe('metalsmith-branch', function(){
 
   // TODO
   
-  it('should process selected files through three plugins in a branch')
+  it('should process selected files through three plugins in a branch', function(done){
+    function adder(files,ms,done){
+      function add(name,done){
+        var newf = path.basename(name, path.extname(name)) + '.2' + path.extname(name);
+        files[newf] = clone(files[name]);
+        done();
+      }
+      debug('adder');
+      each(Object.keys(files), add, done);
+    }
+
+    function updater(files,ms,done){
+      function update(name,done){
+        var old = files[name].contents.toString().trim();
+        files[name].contents = new Buffer(
+          '<html><head></head><body>' + 
+          old + 
+          '</body></html>'
+        );
+        done();
+      }
+      debug('updater');
+      each(Object.keys(files), update, done);
+    }
+
+    function remover(files,ms,done){
+      function remove(name,done){
+        delete files[name];
+        done();
+      }
+      debug('remover');
+      each(Object.keys(files), remove, done);
+    }
+
+    Metalsmith('test/fixtures/multiplugin')
+      .use( branch('*.txt')
+              .use( adder   ) 
+              .use( updater ) 
+              .use( remover ) 
+          )
+    .build( assertDirEqual('multiplugin',done) )
+  })
   
   it('should process files according to two branches, branch selections do not intersect')
 
