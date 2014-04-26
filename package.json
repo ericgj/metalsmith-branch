@@ -3,11 +3,11 @@
   "name": "metalsmith-branch",
   "description": "A metalsmith plugin to run separate middleware pipelines on selected files",
   "repository": "git://github.com/ericgj/metalsmith-branch.git",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "license": "MIT",
   "main": "lib/index.js",
   "dependencies": {
-    "ware": "~0.2.1",
+    "ware": "~0.3.0",
     "multimatch": "^0.1.0",
     "clone": "^0.1.11",
     "debug": "~0.7.4"
