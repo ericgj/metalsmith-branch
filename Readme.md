@@ -69,7 +69,19 @@
                 )
         )
   ```
+  
+  It's also possible to specify an array of patterns:
+  
+  ```js
+  // to select all markdown files in the "posts" and "projects" directories:
 
+  metalsmith
+    .use( branch()
+            .pattern(["projects/*/*.md", "posts/**/*.md"])
+            .use( markdown() )
+        )
+  ```
+  
 ## License
 
   MIT
