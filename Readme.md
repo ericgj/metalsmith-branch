@@ -82,10 +82,12 @@
         )
   ```
   
+  See [multimatch][multimatch] for all pattern options.
+  
 ## License
 
   MIT
 
 
 [metalsmith]: https://github.com/segmentio/metalsmith
-
+[multimatch]: https://www.npmjs.com/package/multimatch
