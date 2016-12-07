@@ -128,35 +128,35 @@ describe('metalsmith-branch', function(){
 
   it('should process files according to nested branches', function(done){
    
-   function hasLicense(file,props){
+    function hasLicense(file,props){
      return props.license && props.author
-   }
-   
-   function appendLicense(files,ms,done){
+    }
+
+    function appendLicense(files,ms,done){
      function append(file,done){
        var str = [
          "",
          "-----",
          "Licensed " + files[file].license + " by " + files[file].author,
        ].join("\n");
-       var contents = files[file].contents
-         , len = contents.length
-       contents.length = len + str.length
-       contents.write(str,len);
+       var appended = new Buffer(str);
+       var contents = files[file].contents;
+       var output = Buffer.concat([contents, appended]);
+       files[file].contents = output;
        done();
      }
      debug('appendLicense');
      each(Object.keys(files), append, done);
-   }
+    }
 
-   Metalsmith('test/fixtures/nested')
+    Metalsmith('test/fixtures/nested')
      .use( branch('*.md')
              .use( branch( hasLicense )
                      .use( appendLicense )
                  )
              .use( markdown() )
          )
-     .build( assertDirEqual('nested', done) );
+     .build(assertDirEqual('nested', done));
   })
 
 
