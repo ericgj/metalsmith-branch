@@ -3,7 +3,7 @@
   "name": "metalsmith-branch",
   "description": "A metalsmith plugin to run separate middleware pipelines on selected files",
   "repository": "git://github.com/ericgj/metalsmith-branch.git",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "license": "MIT",
   "main": "lib/index.js",
   "scripts": {
